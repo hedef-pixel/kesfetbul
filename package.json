@@ -1,0 +1,12 @@
+{
+  "name": "kesfetbul",
+  "version": "1.0.0",
+  "description": "KesfetBul - AI destekli arama ve teklif toplama platformu",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
