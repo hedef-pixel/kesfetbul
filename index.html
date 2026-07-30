@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KesfetBul — Ne ararsan, KesfetBul!</title>
+<style>
+  :root{
+    --blue:#2f5bff;
+    --blue-dark:#1a3fd6;
+    --ink:#0f1b3d;
+    --muted:#6b7280;
+    --bg:#f5f7fb;
+    --card:#ffffff;
+    --border:#e7eaf3;
+    --orange:#ff7a45;
+    --green:#16a34a;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);}
+  a{text-decoration:none;color:inherit;}
+  button{font-family:inherit;cursor:pointer;}
+
+  header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 32px;background:#fff;border-bottom:1px solid var(--border);
+    position:sticky;top:0;z-index:50;
+  }
+  .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--blue);}
+  .logo svg{flex-shrink:0;}
+  nav{display:flex;gap:28px;font-size:15px;font-weight:600;color:#374151;}
+  nav a{padding:6px 2px;border-bottom:2px solid transparent;transition:.15s;}
+  nav a:hover, nav a.active{color:var(--blue);border-bottom-color:var(--blue);}
+  .header-right{display:flex;align-items:center;gap:16px;}
+  .btn-primary{
+    background:var(--blue);color:#fff;padding:10px 18px;border-radius:999px;border:none;
+    font-weight:700;font-size:14px;display:flex;align-items:center;gap:6px;
+  }
+  .btn-primary:hover{background:var(--blue-dark);}
+  .icon-btn{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#f2f4f9;border:none;font-size:16px;}
+  .user-chip{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;}
+  .avatar{width:32px;height:32px;border-radius:50%;background:#dfe4f0;display:flex;align-items:center;justify-content:center;font-size:14px;}
+
+  main{max-width:1400px;margin:0 auto;padding:32px;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:24px;}
+  @media(max-width:1100px){main{grid-template-columns:1fr;}}
+
+  .hero-title{font-size:44px;font-weight:800;line-height:1.15;margin:0 0 10px;}
+  .hero-title .accent{color:var(--blue);position:relative;}
+  .hero-sub{color:var(--muted);font-size:16px;margin:0 0 22px;max-width:480px;}
+
+  .search-box{
+    display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--border);
+    border-radius:999px;padding:8px 8px 8px 20px;box-shadow:0 4px 18px rgba(47,91,255,.06);
+  }
+  .search-box input{flex:1;border:none;outline:none;font-size:15px;padding:8px 0;background:transparent;}
+  .search-box .cam{background:none;border:none;font-size:18px;color:var(--muted);padding:6px;}
+  .search-submit{width:42px;height:42px;border-radius:50%;background:var(--blue);border:none;color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+  .search-submit:hover{background:var(--blue-dark);}
+
+  .popular{margin-top:14px;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .chip{background:#fff;border:1px solid var(--border);padding:6px 14px;border-radius:999px;font-size:13px;font-weight:600;color:#374151;}
+  .chip:hover{border-color:var(--blue);color:var(--blue);}
+
+  .section-title{font-size:19px;font-weight:800;margin:34px 0 14px;display:flex;align-items:center;justify-content:space-between;}
+  .section-title .see-all{font-size:13px;font-weight:700;color:var(--blue);}
+
+  .categories{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
+  @media(max-width:700px){.categories{grid-template-columns:repeat(3,1fr);}}
+  .cat-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:18px 8px;text-align:center;font-size:12.5px;font-weight:700;color:#374151;transition:.15s;}
+  .cat-card:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 6px 16px rgba(47,91,255,.08);}
+  .cat-card .ic{font-size:24px;display:block;margin-bottom:8px;}
+
+  .products{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;}
+  @media(max-width:1300px){.products{grid-template-columns:repeat(3,1fr);}}
+  @media(max-width:700px){.products{grid-template-columns:repeat(2,1fr);}}
+  .pcard{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;position:relative;}
+  .pcard .badge{position:absolute;top:8px;left:8px;background:var(--orange);color:#fff;font-size:10px;font-weight:800;padding:3px 8px;border-radius:6px;z-index:2;}
+  .pcard .img{height:110px;background:linear-gradient(135deg,#eef1fb,#f8f9ff);display:flex;align-items:center;justify-content:center;font-size:34px;}
+  .pcard .info{padding:12px;}
+  .pcard .name{font-size:13px;font-weight:700;margin:0 0 6px;line-height:1.3;min-height:34px;}
+  .pcard .stars{font-size:11.5px;color:var(--orange);margin-bottom:6px;}
+  .pcard .price{font-size:15px;font-weight:800;}
+  .pcard .cheapest{font-size:11px;color:var(--muted);margin-top:4px;}
+
+  .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px;}
+
+  .assistant-head{display:flex;align-items:center;gap:8px;font-weight:800;font-size:15px;margin-bottom:14px;}
+  .assistant-head .dot{width:8px;height:8px;background:var(--green);border-radius:50%;}
+  .chat-msg{background:#f2f4fb;border-radius:12px;padding:12px 14px;font-size:13.5px;margin-bottom:10px;line-height:1.5;}
+  .chat-msg.user{background:var(--blue);color:#fff;margin-left:30px;}
+  .quick-replies{display:flex;flex-direction:column;gap:8px;margin:12px 0;}
+  .quick-reply{background:#fff;border:1.5px solid #d8ddf3;color:var(--blue);font-size:13px;font-weight:600;padding:9px 12px;border-radius:10px;text-align:left;}
+  .quick-reply:hover{background:#eef1ff;}
+  .chat-input{display:flex;gap:8px;border:1px solid var(--border);border-radius:999px;padding:6px 6px 6px 14px;margin-top:10px;}
+  .chat-input input{flex:1;border:none;outline:none;font-size:13.5px;}
+  .chat-input button{width:34px;height:34px;border-radius:50%;background:var(--blue);color:#fff;border:none;font-size:14px;}
+  #chatMessages{max-height:340px;overflow-y:auto;}
+
+  .deal-card{background:#0f1b3d;color:#fff;border-radius:var(--radius);padding:20px;}
+  .deal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;font-size:13px;font-weight:700;color:#ffd27a;}
+  .timer{display:flex;gap:6px;font-weight:800;font-size:15px;}
+  .timer span{background:#1e2b57;padding:4px 8px;border-radius:6px;}
+  .deal-img{height:120px;background:#1e2b57;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:44px;margin-bottom:12px;}
+  .deal-name{font-weight:700;font-size:15px;margin-bottom:4px;}
+  .deal-price{font-size:20px;font-weight:800;margin:6px 0;}
+  .deal-price .old{font-size:13px;color:#9aa4c7;text-decoration:line-through;font-weight:500;margin-left:6px;}
+  .deal-btn{width:100%;background:var(--blue);color:#fff;border:none;padding:12px;border-radius:10px;font-weight:700;margin-top:8px;}
+
+  .teklif-card{background:linear-gradient(135deg,#eef2ff,#e5ebff);border:none;}
+  .teklif-card h3{margin:0 0 8px;font-size:16px;color:var(--blue-dark);}
+  .teklif-card p{margin:0 0 16px;font-size:13.5px;color:#475069;}
+
+  .feature-item{display:flex;gap:12px;align-items:flex-start;margin-bottom:16px;}
+  .feature-item .ic{width:38px;height:38px;background:#eef1ff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+  .feature-item b{display:block;font-size:14px;margin-bottom:2px;}
+  .feature-item span{font-size:12.5px;color:var(--muted);}
+
+  .overlay{position:fixed;inset:0;background:rgba(15,27,61,.5);display:none;align-items:center;justify-content:center;z-index:100;padding:20px;}
+  .overlay.show{display:flex;}
+  .modal{background:#fff;border-radius:18px;padding:28px;max-width:440px;width:100%;position:relative;}
+  .modal h3{margin:0 0 6px;font-size:19px;}
+  .modal p{margin:0 0 18px;color:var(--muted);font-size:13.5px;}
+  .modal label{font-size:12.5px;font-weight:700;color:#374151;display:block;margin:12px 0 6px;}
+  .modal input, .modal select, .modal textarea{
+    width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:10px;font-size:14px;outline:none;
+  }
+  .modal input:focus, .modal select:focus, .modal textarea:focus{border-color:var(--blue);}
+  .modal-close{position:absolute;top:18px;right:18px;background:none;border:none;font-size:18px;color:var(--muted);}
+  .modal-submit{width:100%;background:var(--blue);color:#fff;border:none;padding:13px;border-radius:10px;font-weight:700;margin-top:20px;font-size:14.5px;}
+  .modal-submit:hover{background:var(--blue-dark);}
+  .firms-note{background:#f2f4fb;border-radius:10px;padding:12px 14px;font-size:12.5px;color:#374151;margin-top:14px;display:flex;gap:8px;align-items:flex-start;}
+
+  .success{display:none;text-align:center;padding:10px 0;}
+  .success.show{display:block;}
+  .success .ic{font-size:40px;margin-bottom:10px;}
+  .success h4{margin:0 0 8px;font-size:17px;}
+  .success p{font-size:13.5px;color:var(--muted);margin:0;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#2f5bff" stroke-width="2"/><path d="M15 9l-2 6-6 2 2-6 6-2z" fill="#2f5bff"/></svg>
+    kesfetbul
+  </div>
+  <nav>
+    <a class="active">Keşfet</a>
+    <a>Kategoriler</a>
+    <a>Fırsatlar</a>
+    <a>Hizmetler</a>
+    <a>Markalar</a>
+    <a>Blog</a>
+  </nav>
+  <div class="header-right">
+    <button class="btn-primary" onclick="openModal()">➤ Teklif Al</button>
+    <button class="icon-btn">♡</button>
+    <button class="icon-btn">🔔</button>
+    <div class="user-chip"><div class="avatar">A</div> Merhaba, Ahmet</div>
+  </div>
+</header>
+
+<main>
+  <div>
+    <h1 class="hero-title">Ne ararsan,<br><span class="accent">KesfetBul!</span> ✨</h1>
+    <p class="hero-sub">Yapay zeka destekli akıllı arama ile en iyi ürün ve hizmetleri keşfedin, ya da tek tıkla firmalardan teklif alın.</p>
+
+    <div class="search-box">
+      <span style="color:var(--muted)">🔍</span>
+      <input id="searchInput" type="text" placeholder="Telefon, klima, avukat, villa, ofis mobilyası...">
+      <button class="cam">📷</button>
+      <button class="search-submit" onclick="handleSearch()">➤</button>
+    </div>
+    <div class="popular">
+      Popüler aramalar:
+      <span class="chip" onclick="quickSearch('iPhone 15')">iPhone 15</span>
+      <span class="chip" onclick="quickSearch('Klima')">Klima</span>
+      <span class="chip" onclick="quickSearch('Avukat')">Avukat</span>
+      <span class="chip" onclick="quickSearch('Branda')">Branda</span>
+      <span class="chip" onclick="quickSearch('Muhasebeci')">Muhasebeci</span>
+    </div>
+
+    <div class="section-title">Kategoriler <a class="see-all" href="#">Tüm Kategoriler →</a></div>
+    <div class="categories">
+      <div class="cat-card"><span class="ic">💻</span>Elektronik</div>
+      <div class="cat-card"><span class="ic">🛋️</span>Ev & Yaşam</div>
+      <div class="cat-card"><span class="ic">🧱</span>İnşaat & Yapı</div>
+      <div class="cat-card"><span class="ic">🚗</span>Otomotiv</div>
+      <div class="cat-card"><span class="ic">👕</span>Moda</div>
+      <div class="cat-card"><span class="ic">🚴</span>Spor & Outdoor</div>
+      <div class="cat-card"><span class="ic">💄</span>Kozmetik</div>
+      <div class="cat-card"><span class="ic">👪</span>Anne & Çocuk</div>
+      <div class="cat-card"><span class="ic">🧑‍💼</span>Hizmetler</div>
+      <div class="cat-card"><span class="ic">•••</span>Tümü</div>
+    </div>
+
+    <div class="section-title">Akıllı Öneriler <a class="see-all" href="#">Tümünü Gör →</a></div>
+    <div class="products" id="productGrid"></div>
+  </div>
+
+  <div>
+    <div class="card">
+      <div class="assistant-head"><span class="dot"></span> ✨ KesfetBul AI Asistan</div>
+      <div id="chatMessages">
+        <div class="chat-msg">Merhaba Ahmet! 👋 Size nasıl yardımcı olabilirim?</div>
+      </div>
+      <div class="quick-replies" id="quickReplies">
+        <button class="quick-reply" onclick="askAI('20.000 TL\'ye telefon öner')">20.000 TL'ye telefon öner</button>
+        <button class="quick-reply" onclick="askAI('En iyi fiyatlı dizüstü bilgisayarlar')">En iyi fiyatlı dizüstü bilgisayarlar</button>
+        <button class="quick-reply" onclick="askAI('Branda istiyorum')">Branda istiyorum</button>
+        <button class="quick-reply" onclick="askAI('Avukat arıyorum, neye dikkat etmeliyim?')">Avukat arıyorum, neye dikkat etmeliyim?</button>
+      </div>
+      <div class="chat-input">
+        <input id="chatInput" type="text" placeholder="Daha fazlası için sorun...">
+        <button onclick="sendChat()">➤</button>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card deal-card">
+      <div class="deal-head">👑 Günün Fırsatı <span class="timer"><span>03</span>:<span>45</span>:<span>12</span></span></div>
+      <div class="deal-img">🍳</div>
+      <div class="deal-name">Xiaomi Smart Air Fryer 6L</div>
+      <div style="font-size:12px;color:#ffd27a;">★★★★★ (125)</div>
+      <div class="deal-price">2.499 TL <span class="old">2.999 TL</span></div>
+      <button class="deal-btn">Fırsatı Kaçırma →</button>
+    </div>
+
+    <div class="card teklif-card">
+      <h3>Teklif Al, En İyi Fiyatı Yakala!</h3>
+      <p>İhtiyacın olan ürünü veya hizmeti birden fazla firmadan teklif alarak karşılaştır.</p>
+      <button class="btn-primary" onclick="openModal()">Teklif Al →</button>
+    </div>
+
+    <div class="card">
+      <h3 style="margin:0 0 16px;font-size:16px;">Neden KesfetBul?</h3>
+      <div class="feature-item"><div class="ic">🧠</div><div><b>Yapay Zeka Destekli Arama</b><span>İhtiyacınızı daha iyi anlayan akıllı öneriler.</span></div></div>
+      <div class="feature-item"><div class="ic">🏷️</div><div><b>En İyi Fiyat Garantisi</b><span>Binlerce mağaza ve satıcıyı karşılaştırın.</span></div></div>
+      <div class="feature-item"><div class="ic">💬</div><div><b>Güvenilir Yorumlar</b><span>Gerçek kullanıcı deneyimleriyle karar verin.</span></div></div>
+      <div class="feature-item"><div class="ic">⚡</div><div><b>Hızlı ve Kolay</b><span>Aradığınız ürün veya hizmete en hızlı yoldan ulaşın.</span></div></div>
+    </div>
+  </div>
+</main>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modalForm">
+      <h3 id="modalTitle">Teklif Al</h3>
+      <p id="modalSub">Bu ürün/hizmet için firmalara talebinizi iletelim, size en iyi teklifler gelsin.</p>
+      <label>Ne arıyorsunuz?</label>
+      <input id="mSearch" type="text" placeholder="Örn: Branda, tekne brandası">
+      <label>Şehir</label>
+      <input id="mCity" type="text" placeholder="Örn: İstanbul">
+      <label>Telefon</label>
+      <input id="mPhone" type="text" placeholder="05xx xxx xx xx">
+      <label>Detaylar (ölçü, kullanım amacı vb.)</label>
+      <textarea rows="3" placeholder="Talebinizle ilgili detay ekleyin..."></textarea>
+      <div class="firms-note">📋 <span id="firmCount">Bu kategoride kayıtlı <b>14 firma</b> bulunuyor. Talebiniz eşleşen firmalara iletilecek.</span></div>
+      <button class="modal-submit" onclick="submitTeklif()">Talebi Gönder</button>
+    </div>
+    <div class="success" id="successBox">
+      <div class="ic">✅</div>
+      <h4>Talebiniz alındı!</h4>
+      <p>Eşleşen firmalar en kısa sürede size teklif gönderecek. Bildirimlerinizi takip edin.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = '';
+let currentKategoriSlug = null;
+
+async function renderProducts(){
+  const grid = document.getElementById('productGrid');
+  try{
+    const res = await fetch(`${API}/api/urunler`);
+    const products = await res.json();
+    grid.innerHTML = products.map(p => `
+      <div class="pcard">
+        ${p.rozet ? `<div class="badge">${p.rozet}</div>` : ''}
+        <div class="img">${p.icon}</div>
+        <div class="info">
+          <p class="name">${p.ad}</p>
+          <div class="stars">★ ${p.puan} (${p.yorum})</div>
+          <div class="price">${p.fiyat.toLocaleString('tr-TR')} TL</div>
+          <div class="cheapest">En Ucuz: ${p.enUcuz}</div>
+        </div>
+      </div>
+    `).join('');
+  }catch(e){
+    grid.innerHTML = `<p style="color:var(--muted);font-size:13px;">Ürünler yüklenemedi. Backend'in çalıştığından emin olun.</p>`;
+  }
+}
+renderProducts();
+
+async function handleSearch(){
+  const q = document.getElementById('searchInput').value.trim();
+  if(!q) return;
+  quickSearch(q);
+}
+
+async function quickSearch(q){
+  document.getElementById('searchInput').value = q;
+  addUserMsg(q);
+  await runSearch(q);
+}
+
+function addUserMsg(text){
+  const box = document.getElementById('chatMessages');
+  box.insertAdjacentHTML('beforeend', `<div class="chat-msg user">${text}</div>`);
+  box.scrollTop = box.scrollHeight;
+}
+function addAIMsg(text){
+  const box = document.getElementById('chatMessages');
+  box.insertAdjacentHTML('beforeend', `<div class="chat-msg">${text}</div>`);
+  box.scrollTop = box.scrollHeight;
+}
+function addTeklifCard(kategoriAd, kategoriSlug, firmSayisi){
+  const box = document.getElementById('chatMessages');
+  box.insertAdjacentHTML('beforeend', `
+    <div class="chat-msg" style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+      <span>Bu ürünü/hizmeti <b>${firmSayisi} firma</b> sunuyor.</span>
+      <button class="quick-reply" style="white-space:nowrap;padding:8px 14px;" onclick="openModal('${kategoriSlug}', '${kategoriAd}', ${firmSayisi})">Teklif Al</button>
+    </div>`);
+  box.scrollTop = box.scrollHeight;
+}
+
+async function runSearch(q){
+  try{
+    const res = await fetch(`${API}/api/ara?q=${encodeURIComponent(q)}`);
+    const data = await res.json();
+    if(data.tip === 'teklif'){
+      addAIMsg(`"${data.kategori}" için standart bir fiyat listesi yok — bu genelde firmadan firmaya, ihtiyaca göre değişen bir hizmet/ürün. Size en uygun olanı bulmak için birkaç firmadan teklif almanızı öneririm.`);
+      addTeklifCard(data.kategori, q.toLowerCase(), data.firmaSayisi);
+    } else {
+      addAIMsg(`"${q}" için ${data.sonuclar.length} sonuç buldum. En uygun fiyatı ve önerileri sol taraftaki listede görebilirsiniz.`);
+    }
+  }catch(e){
+    addAIMsg("Sunucuya bağlanılamadı. Backend'in (server.js) çalıştığından emin olun.");
+  }
+}
+
+async function askAI(text){
+  addUserMsg(text);
+  await runSearch(text);
+}
+
+function sendChat(){
+  const input = document.getElementById('chatInput');
+  const val = input.value.trim();
+  if(!val) return;
+  askAI(val);
+  input.value = '';
+}
+document.getElementById('chatInput').addEventListener('keydown', e=>{
+  if(e.key === 'Enter') sendChat();
+});
+
+function openModal(kategoriSlug, kategoriAd, firmCount){
+  currentKategoriSlug = kategoriSlug || null;
+  document.getElementById('overlay').classList.add('show');
+  document.getElementById('modalForm').style.display = 'block';
+  document.getElementById('successBox').classList.remove('show');
+  if(kategoriAd){
+    document.getElementById('mSearch').value = kategoriAd;
+  }
+  document.getElementById('firmCount').innerHTML = firmCount != null
+    ? `Bu kategoride kayıtlı <b>${firmCount} firma</b> bulunuyor. Talebiniz eşleşen firmalara iletilecek.`
+    : `Talebinizi ilettiğinizde eşleşen firmalara otomatik iletilecek.`;
+}
+function closeModal(){
+  document.getElementById('overlay').classList.remove('show');
+}
+
+async function submitTeklif(){
+  const isim = document.getElementById('mSearch').value.trim();
+  const sehir = document.getElementById('mCity').value.trim();
+  const telefon = document.getElementById('mPhone').value.trim();
+  const detay = document.querySelector('#modalForm textarea').value.trim();
+
+  if(!telefon || !isim){
+    alert('Lütfen en az "ne arıyorsunuz" ve telefon alanlarını doldurun.');
+    return;
+  }
+
+  try{
+    const res = await fetch(`${API}/api/teklif`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        kategori: currentKategoriSlug || isim.toLowerCase(),
+        isim, telefon, sehir, detay
+      })
+    });
+    const data = await res.json();
+    document.getElementById('modalForm').style.display = 'none';
+    document.getElementById('successBox').classList.add('show');
+    if(data.eslesenFirmaSayisi != null){
+      document.querySelector('#successBox p').textContent =
+        `${data.eslesenFirmaSayisi} eşleşen firma en kısa sürede size teklif gönderecek. Bildirimlerinizi takip edin.`;
+    }
+  }catch(e){
+    alert('Talep gönderilemedi. Backend çalışıyor mu kontrol edin.');
+  }
+}
+</script>
+</body>
+</html>
