@@ -273,25 +273,18 @@
 const API = '';
 let currentKategoriSlug = null;
 
-async function renderProducts(){
-  const grid = document.getElementById('productGrid');
+async function runSearch(q){
   try{
-    const res = await fetch(`${API}/api/urunler`);
-    const products = await res.json();
-    grid.innerHTML = products.map(p => `
-      <div class="pcard">
-        ${p.rozet ? `<div class="badge">${p.rozet}</div>` : ''}
-        <div class="img">${p.icon}</div>
-        <div class="info">
-          <p class="name">${p.ad}</p>
-          <div class="stars">★ ${p.puan} (${p.yorum})</div>
-          <div class="price">${p.fiyat.toLocaleString('tr-TR')} TL</div>
-          <div class="cheapest">En Ucuz: ${p.enUcuz}</div>
-        </div>
-      </div>
-    `).join('');
+    const res = await fetch(`${API}/api/ara?q=${encodeURIComponent(q)}`);
+    const data = await res.json();
+    if(data.tip === 'teklif'){
+      addAIMsg(data.cevap || `"${data.kategori}" için standart bir fiyat listesi yok — size en uygun olanı bulmak için birkaç firmadan teklif almanızı öneririm.`);
+      addTeklifCard(data.kategori, q.toLowerCase(), data.firmaSayisi);
+    } else {
+      addAIMsg(data.cevap || `"${q}" için ${data.sonuclar.length} sonuç buldum. En uygun fiyatı ve önerileri sol taraftaki listede görebilirsiniz.`);
+    }
   }catch(e){
-    grid.innerHTML = `<p style="color:var(--muted);font-size:13px;">Ürünler yüklenemedi. Backend'in çalıştığından emin olun.</p>`;
+    addAIMsg("Sunucuya bağlanılamadı. Backend'in (server.js) çalıştığından emin olun.");
   }
 }
 renderProducts();
