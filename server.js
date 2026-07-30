@@ -63,6 +63,12 @@ SADECE şu JSON formatında yanıt ver, başka hiçbir şey yazma:
       })
     });
     const data = await res.json();
+
+    if (!res.ok || data.type === 'error') {
+      console.error('Anthropic API hatası. HTTP durumu:', res.status, '- Detay:', JSON.stringify(data));
+      return null;
+    }
+
     const text = (data.content || []).map(b => b.text || '').join('');
     const cleaned = text.replace(/```json|```/g, '').trim();
     const parsed = JSON.parse(cleaned);
