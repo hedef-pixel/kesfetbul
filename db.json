@@ -1,0 +1,36 @@
+{
+  "kategoriler": [
+    { "slug": "branda", "ad": "Branda", "tip": "teklif" },
+    { "slug": "avukat", "ad": "Avukat", "tip": "teklif" },
+    { "slug": "muhasebeci", "ad": "Muhasebeci", "tip": "teklif" },
+    { "slug": "tadilat", "ad": "Tadilat", "tip": "teklif" },
+    { "slug": "sigorta", "ad": "Sigorta", "tip": "teklif" },
+    { "slug": "nakliye", "ad": "Nakliye", "tip": "teklif" },
+    { "slug": "elektronik", "ad": "Elektronik", "tip": "urun" }
+  ],
+  "firmalar": [
+    { "id": 1, "kategori": "branda", "ad": "Deniz Branda San.", "sehir": "İstanbul", "puan": 4.7 },
+    { "id": 2, "kategori": "branda", "ad": "Marintek Branda", "sehir": "İzmir", "puan": 4.5 },
+    { "id": 3, "kategori": "branda", "ad": "Anadolu Tente & Branda", "sehir": "Ankara", "puan": 4.6 },
+    { "id": 4, "kategori": "branda", "ad": "Ege Branda Atölyesi", "sehir": "İzmir", "puan": 4.8 },
+    { "id": 5, "kategori": "branda", "ad": "Marmara Tekne Branda", "sehir": "İstanbul", "puan": 4.4 },
+    { "id": 6, "kategori": "avukat", "ad": "Yılmaz Hukuk Bürosu", "sehir": "İstanbul", "puan": 4.9 },
+    { "id": 7, "kategori": "avukat", "ad": "Kaya & Ortakları", "sehir": "Ankara", "puan": 4.6 },
+    { "id": 8, "kategori": "avukat", "ad": "Demir Hukuk", "sehir": "İzmir", "puan": 4.7 },
+    { "id": 9, "kategori": "muhasebeci", "ad": "Öztürk Mali Müşavirlik", "sehir": "İstanbul", "puan": 4.5 },
+    { "id": 10, "kategori": "muhasebeci", "ad": "Aksoy YMM", "sehir": "Bursa", "puan": 4.6 },
+    { "id": 11, "kategori": "tadilat", "ad": "Usta Ellerle Tadilat", "sehir": "İstanbul", "puan": 4.3 },
+    { "id": 12, "kategori": "tadilat", "ad": "Hızlı Tadilat Ekibi", "sehir": "Ankara", "puan": 4.4 },
+    { "id": 13, "kategori": "sigorta", "ad": "Güven Sigorta Acentesi", "sehir": "İstanbul", "puan": 4.5 },
+    { "id": 14, "kategori": "nakliye", "ad": "Şehirler Arası Nakliyat", "sehir": "İstanbul", "puan": 4.2 }
+  ],
+  "urunler": [
+    { "id": 1, "ad": "Apple iPhone 15 128GB", "fiyat": 32999, "enUcuz": "Gürgençler", "puan": 4.8, "yorum": 856, "icon": "📱" },
+    { "id": 2, "ad": "ASUS TUF Gaming F15", "fiyat": 21499, "enUcuz": "Hepsiburada", "puan": 4.7, "yorum": 623, "icon": "💻", "rozet": "En Popüler" },
+    { "id": 3, "ad": "Bosch Serie 4 Bulaşık Makinesi", "fiyat": 18999, "enUcuz": "Koçtaş", "puan": 4.6, "yorum": 512, "icon": "🍽️", "rozet": "%15 İndirim" },
+    { "id": 4, "ad": "Nike Air Max 270", "fiyat": 4399, "enUcuz": "Sneaks Up", "puan": 4.7, "yorum": 342, "icon": "👟" },
+    { "id": 5, "ad": "Xdrive Profesyonel Oyuncu Koltuğu", "fiyat": 6999, "enUcuz": "Amazon", "puan": 4.6, "yorum": 278, "icon": "🪑" },
+    { "id": 6, "ad": "Chanel Bleu de Chanel EDP 100ml", "fiyat": 5899, "enUcuz": "Boyner", "puan": 4.9, "yorum": 614, "icon": "🧴", "rozet": "Yeni" }
+  ],
+  "teklifler": []
+}
